@@ -1,0 +1,166 @@
+require 'fileutils'
+
+class Category
+  include DataMapper::Resource
+  include CustomException
+
+  property :id, Serial
+  property :title, String
+  property :parent_id, Integer
+  property :slug, String
+  property :created_at, DateTime
+  has n, :category_keywords
+
+  # *******************************************************************************
+  #This creates the necessary CREATE statements to create the tables in the database
+  #It drops tables if alreadys exists and creates the database afresh
+  #****************************************************************************
+  # DataMapper.auto_migrate!
+  
+
+  def create_slug
+     self.slug = self.title.split.join("-")
+     self.update(:slug => self.title.split.join("-")) 
+  end
+
+  def to_param
+    self.title.split.join('-')
+  end
+
+  # expects an array    
+   
+  def find_all_subcategories
+    total_categories = categories = []
+    sub_categories = Category.all(:parent_id => self.id)
+    sub_categories.each do |category|                 
+      categories = Category.all(:parent_id => category.id)
+      total_categories += categories 
+    end
+    (sub_categories + total_categories)
+  end
+
+
+  # saves the file with the following steps
+  # Checks if the folder config/csv exists, creates it if it doesn't
+  # If all is set the initiates the copy process
+  def self.save_file(file)
+    file_name =  "category_keyword.csv"
+    content_type = file.content_type
+    raise CustomException::InvalidFileFormatException unless content_type == "text/csv"
+    Dir.mkdir("#{RAILS_ROOT}/config/csv") unless File.exists?("#{RAILS_ROOT}/config/csv")
+    destination_path = File.join("#{RAILS_ROOT}/config/csv")
+    delete_file("#{RAILS_ROOT}/config/csv/category_keyword.csv")
+    Category.copy_file(file, destination_path, file_name) ? true : false
+  rescue CustomException::InvalidFileFormatException =>e
+    RAILS_DEFAULT_LOGGER.warn "[ERROR] #{e.message} #{e.backtrace}"
+    return [false, "InvalidFileFormat"] 
+  rescue => e
+    RAILS_DEFAULT_LOGGER.warn "[ERROR] #{e.message} #{e.backtrace}"
+    return [false, "Something Went Wrong"] 
+  end  
+
+
+  def self.initiate_category_load
+    Category.reset_class_variable_counts
+    Category.delete_all_categories_and_keywords
+    load_count = Category.load_categories  
+    load_count > 0 ? load_count : nil 
+  end
+
+  def self.category_exists?(category_title)
+    Category.first(:title => category_title) 
+  end
+
+  private
+
+  # checks if its a Tempfile
+  # Creates a file called categories.csv in the write mode.
+  # Copies the contents of the Tempfile into the categories.csv file
+  def self.copy_file(file, destination_path, filename)
+    if file.instance_of? Tempfile
+      File.new("#{destination_path}/#{filename}", 'w')
+      RAILS_DEFAULT_LOGGER.debug " LOCAL PATH " +  file.local_path
+      FileUtils.copy(file.local_path, "#{destination_path}/#{filename}")
+    end
+    return true
+  rescue => e
+    RAILS_DEFAULT_LOGGER.warn "[ERROR] Something went wrong. Your file could not be uploaded"
+    return false
+  end  
+
+  def self.delete_file(filename)
+    if File.exists?(filename)
+      File.delete(filename)
+    end
+  end
+
+
+  # static variables to enable loading of categories it could be instance variables too but in this case
+  # this does not affect the way the system works
+
+  @@category_id = 0  
+  @@sub_category_id = 0 
+  @@super_subcategory_id = 0
+  @@id = 0
+
+  def self.reset_class_variable_counts
+    @@category_id = 0  
+    @@sub_category_id = 0 
+    @@super_subcategory_id = 0
+    @@id = 0
+  end
+
+  #TODO the path needs to be changed to a default RAILS location
+  def self.load_categories
+    file = File.open('/home/siddharth/Desktop/categories1.1.txt')
+    while(line = file.gets)     
+      puts line
+      new_entry = line
+      self.new_category(new_entry) if (line.index("**").nil? && line.index("|").nil?)
+      self.new_subcategory(new_entry) if line.index("|")
+      self.new_super_subcategory(new_entry) if line.index("**")
+    end
+    @@id
+  end
+
+  def self.new_category(new_entry)
+    puts "NEW CATEGORY => #{new_entry}"
+    title = new_entry.strip
+    category = Category.create(:title=>title, :parent_id => nil, :slug=>self.create_slug(title))   
+    if category
+      @@category_id = category.id
+    end
+    @@id += 1
+  end
+
+  def self.new_subcategory(new_entry)
+    puts "NEW SUBCATEGORY => #{new_entry}"
+    title =  new_entry.split("|")
+    sub_category = Category.create(:title=>title[1].strip, :parent_id => @@category_id, :slug=>self.create_slug(title))
+    if sub_category
+      @@sub_category_id = sub_category.id
+    end
+    @@id +=1   
+  end
+
+  def self.new_super_subcategory(new_entry)
+    puts "NEW SUPERSUBCATEGORY => #{new_entry}"
+    title =  new_entry.split("**")
+    super_sub_category =  Category.create(:title=>title[1].strip, :parent_id =>@@sub_category_id,
+                                          :slug=>self.create_slug(title))
+    if super_sub_category
+      @@super_sub_category_id = super_sub_category.id   # not really needed but just in case
+    end
+    @@id +=1
+  end
+
+  def self.delete_all_categories_and_keywords
+    CategoryKeyword.auto_migrate!
+    Category.auto_migrate!
+  end
+
+  def self.create_slug(title)
+    title.split.join("-")
+  end
+
+end

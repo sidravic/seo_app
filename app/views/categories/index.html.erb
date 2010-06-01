@@ -1,0 +1,38 @@
+<style>
+  .categories{
+      padding:8px;
+      font-weight:bold;
+      font-color:blue;
+    }
+</style>
+<div class='categories-page'>
+  <table cellpadding='5' cellspacing='2'>
+    <% 0.step(@categories.size - 1, 4) do |index| %>         
+      <tr>
+
+        <td>
+          <%= link_to "#{@categories[index].title}", category_url(@categories[index]), :class => "categories" %>
+        </td>
+
+        <% if index_within_category_array?(index, @categories) %>
+          <td>
+            <%= link_to "#{@categories[index + 1].title}", category_url(@categories[index + 1]), :class => "categories" %>
+          </td>
+        <% end %>
+
+        <% if index_within_category_array?(index, @categories ) %>
+          <td>
+            <%= link_to "#{@categories[index + 2].title}", category_url(@categories[index + 2]), :class=>"categories" %>
+          </td>
+        <% end %>
+
+        <% if index_within_category_array?(index, @categories ) %>
+          <td>
+            <%= link_to "#{@categories[index + 3].title}", category_url(@categories[index + 3]), :class=>"categories" %>
+          </td>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </table>
+</div>

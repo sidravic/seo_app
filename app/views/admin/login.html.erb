@@ -1,0 +1,13 @@
+<div class='admin-login'>
+  <div class='form-fields'>
+    <% form_for :admin, @admin, :url=>login_attempt_url do |f| %>
+      <div class='field-label'> Email : </div>
+      <div class='field-elem'> <%= f.text_field :email %> </div>
+
+      <div class='field-label'> Password : </div>
+      <div class=' field-elem'> <%= f.password_field :password %> </div>
+
+      <div class='field-elem'> <%= submit_tag "Login" %> </div>
+    <% end %>
+  </div>
+</div>

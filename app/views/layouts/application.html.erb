@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head> 
+    <title> HelloExpert | <%= @title %> </title>
+  </head>
+
+  <body>
+    <% if flash[:notice] %>
+      <div class='flash-notice'> 
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:error] %>
+      <div class='flash-error'>
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+
+    <div class="body-content">
+      <%= yield %>
+    </div>
+
+  </body>
+</html>
+
