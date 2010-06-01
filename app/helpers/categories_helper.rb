@@ -4,6 +4,11 @@ module CategoriesHelper
   # used for display in the Categories#index method
 
   def index_within_category_array?(index, categories)
-   ((categories.size - 1) > index ) ? true : false    
+    ((categories.size - 1) > index ) ? true : false    
+  end
+
+  def sanitize_title(title)
+    RAILS_DEFAULT_LOGGER.debug " TITLE ============================> #{title}"
+    sanitized_title =  title.gsub("/ ", "").gsub(" /","").gsub("/","")
   end
 end

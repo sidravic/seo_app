@@ -1,9 +1,9 @@
 <style>
   .categories{
-padding:8px;
-font-weight:bold;
-font-color:blue;
-}
+    padding:8px;
+    font-weight:bold;
+    font-color:blue;
+  }
 </style>
 
 <div class= "sub-categories">
@@ -17,26 +17,26 @@ font-color:blue;
       <tr>
         <td>
           <% if index_within_category_array?(index,@sub_categories) %>
-            <%= link_to "#{@sub_categories[index].title}", "http://localhost:3001/answerica_search_/" + "#{@sub_categories[index].title}", :class=>'categories' %>
+            <%= link_to "#{@sub_categories[index].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index].title)}", :class=>'categories' %>
           <% end %>
         </td>
         <td>
           <% if index_within_category_array?(index + 1, @sub_categories) %>           
-            <%= link_to "#{@sub_categories[index + 1].title}", "http://localhost:3001/answerica_search_/" + "#{@sub_categories[index + 1].title}", :class=>'categories' %>
+            <%= link_to "#{@sub_categories[index + 1].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 1].title)}", :class=>'categories' %>
           <% end%>
-         </td>
-         <td>
-           <% if index_within_category_array?(index + 2, @sub_categories) %>
-             <%= link_to "#{@sub_categories[index + 2].title}", "http://localhost:3001/answerica_search_/" + "#{@sub_categories[index + 2].title}", :class=>'categories' %>
-            <% end %>
-          </td>
-          <td>
-            <% if index_within_category_array?(index + 3, @sub_categories) %>
-              <%= link_to "#{@sub_categories[index +3].title}", "http://localhost:3001/answerica_search_/" + "#{@sub_categories[index + 3].title}",:class => 'categories' %>
-            <% end %>
-          </td>
+        </td>
+        <td>
+          <% if index_within_category_array?(index + 2, @sub_categories) %>
+            <%= link_to "#{@sub_categories[index + 2].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 2].title)}", :class=>'categories' %>
+          <% end %>
+        </td>
+        <td>
+          <% if index_within_category_array?(index + 3, @sub_categories) %>
+            <%= link_to "#{@sub_categories[index +3].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 3].title)}",:class => 'categories' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
-</table>
+  </table>
 </div>
 
