@@ -22,26 +22,30 @@
       <tr>
         <td>
           <% if index_within_category_array?(index,@sub_categories) %>
-            <%= link_to "#{@sub_categories[index].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index].title)}", :class=>'categories' %>
-            <p> <%= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index].slug), :class =>'category-keywords' %> </p>
+            <%# link_to "#{@sub_categories[index].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index].title)}", :class=>'categories' %>
+            <%= link_to "#{@sub_categories[index].title}", ckeywords_category_url(@sub_categories[index].slug), :class=>'categories' %>
+
+            <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index].slug), :class =>'category-keywords' %> </p>
           <% end %>
         </td>
         <td>
           <% if index_within_category_array?(index + 1, @sub_categories) %>           
-            <%= link_to "#{@sub_categories[index + 1].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 1].title)}", :class=>'categories' %>
-             <p> <%= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 1].slug), :class =>'category-keywords' %> </p>
+            <%#= link_to "#{@sub_categories[index + 1].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 1].title)}", :class=>'categories' %>
+            <%= link_to "#{@sub_categories[index + 1].title}", ckeywords_category_url(@sub_categories[index + 1].slug), :class=>'categories' %>
+
+             <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 1].slug), :class =>'category-keywords' %> </p>
           <% end%>
         </td>
         <td>
           <% if index_within_category_array?(index + 2, @sub_categories) %>
-            <%= link_to "#{@sub_categories[index + 2].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 2].title)}", :class=>'categories' %>
-            <p> <%= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 2].slug), :class =>'category-keywords' %> </p>
+            <%= link_to "#{@sub_categories[index + 2].title}", ckeywords_category_url(@sub_categories[index + 2].slug), :class=>'categories' %>
+            <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 2].slug), :class =>'category-keywords' %> </p>
           <% end %>
         </td>
         <td>
           <% if index_within_category_array?(index + 3, @sub_categories) %>
-            <%= link_to "#{@sub_categories[index +3].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@sub_categories[index + 3].title)}",:class => 'categories' %>
-            <p> <%= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 3].slug), :class =>'category-keywords' %> </p>
+            <%= link_to "#{@sub_categories[index +3].title}",  ckeywords_category_url(@sub_categories[index + 3].slug),:class => 'categories' %>
+            <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 3].slug), :class =>'category-keywords' %> </p>
           <% end %>
         </td>
       </tr>
