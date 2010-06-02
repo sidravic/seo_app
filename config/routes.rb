@@ -39,6 +39,7 @@ ActionController::Routing::Routes.draw do |map|
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
   map.resources :categories
+  map.answerica_categorization "/answerica_categorization", :action => "answerica_categorization", :controller=>"categories"
   map.load_categories "/load_categories", :action => "load_categories", :controller => "categories"
   map.load_category_keywords "/load_category_keywords", :action => "load_category_keywords", :controller => "categories"
   map.resources :category_keyword

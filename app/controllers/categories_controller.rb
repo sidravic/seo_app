@@ -1,6 +1,7 @@
 require "memoized.rb"
 class CategoriesController < ApplicationController
- before_filter :admin_logged_in?, :except => [:index, :show]
+ before_filter :admin_logged_in?, :except => [:index, :show, :answerica_categorization]
+ protect_from_forgery :except => [:answerica_categorization]
 
   def index
    @categories = Category.all(:parent_id => nil)
@@ -50,6 +51,11 @@ class CategoriesController < ApplicationController
       flash[:notice] = error
     end
     redirect_to admin_url(current_admin.id)
+  end
+
+  def answerica_categorization
+    search_params = params[:search_params] 
+    Category.categorize(search_params) unless search_params.nil?
   end
 
   private

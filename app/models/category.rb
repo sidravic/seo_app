@@ -1,5 +1,5 @@
 require 'fileutils'
-
+require 'net/http'
 class Category
   include DataMapper::Resource
   include CustomException
@@ -9,15 +9,18 @@ class Category
   property :parent_id, Integer
   property :slug, String
   property :created_at, DateTime
+  
   has n, :category_keywords
-
+  has n, :user_keywords
   # *******************************************************************************
   #This creates the necessary CREATE statements to create the tables in the database
   #It drops tables if alreadys exists and creates the database afresh
   #****************************************************************************
   # DataMapper.auto_migrate!
   
-
+  ANSWERICA_CLASSIFIER = "http://184.73.234.206:8080/qc/classifyIt?search="
+  CATEGORIES_FILE_LOCATION = '/home/siddharth/Desktop/categories1.1.txt'
+   
   def create_slug
      self.slug = self.title.split.join("-")
      self.update(:slug => self.title.split.join("-")) 
@@ -71,6 +74,27 @@ class Category
     Category.first(:title => category_title) 
   end
 
+  def self.categorize(search_params)
+   category = call_answerica_for_category(search_params)
+   answerica_recommended_category = category.split(";")[0]
+   seo_category =  find_category_by_title(answerica_recommended_category)
+   seo_category.add_user_keyword(search_params)    
+  end
+
+  def self.find_category_by_title(title)
+    Category.first(:conditions=>["title like ?", "%#{title}%"])
+  end
+
+  def add_user_keyword(search_params)
+    self.user_keywords << UserKeyword.new(:keyword => search_params.strip.downcase) unless user_keyword_exists?(search_params)
+    self.save
+  end
+
+  def user_keyword_exists?(search_params)
+   (self.user_keywords.all(:conditions => [" keyword = ? ", search_params.strip.downcase ])).empty? ? false : true
+  end
+
+
   private
 
   # checks if its a Tempfile
@@ -112,7 +136,7 @@ class Category
 
   #TODO the path needs to be changed to a default RAILS location
   def self.load_categories
-    file = File.open('/home/siddharth/Desktop/categories1.1.txt')
+    file = File.open(CATEGORIES_FILE_LOCATION)
     while(line = file.gets)     
       puts line
       new_entry = line
@@ -161,6 +185,14 @@ class Category
 
   def self.create_slug(title)
     title.split.join("-")
+  end
+
+  def self.call_answerica_for_category(search_params)
+   escaped_search_params = URI.escape(search_params) 
+   uri = URI.parse( ANSWERICA_CLASSIFIER + "#{escaped_search_params}")
+   http =  Net::HTTP.new(uri.host, uri.port)
+   response = http.get(uri.path + "?search=#{escaped_search_params}")
+   response.body
   end
 
 end
