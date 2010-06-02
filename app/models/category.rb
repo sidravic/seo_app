@@ -21,13 +21,9 @@ class Category
   ANSWERICA_CLASSIFIER = "http://184.73.234.206:8080/qc/classifyIt?search="
   CATEGORIES_FILE_LOCATION = '/home/siddharth/Desktop/categories1.1.txt'
    
-  def create_slug
-     self.slug = self.title.split.join("-")
-     self.update(:slug => self.title.split.join("-")) 
-  end
-
+ 
   def to_param
-    self.title.split.join('-')
+     self.slug
   end
 
   # expects an array    
@@ -150,7 +146,7 @@ class Category
   def self.new_category(new_entry)
     puts "NEW CATEGORY => #{new_entry}"
     title = new_entry.strip
-    category = Category.create(:title=>title, :parent_id => nil, :slug=>self.create_slug(title))   
+    category = Category.create(:title=>title, :parent_id => nil, :slug => self.create_slug(title))   
     if category
       @@category_id = category.id
     end
@@ -160,7 +156,7 @@ class Category
   def self.new_subcategory(new_entry)
     puts "NEW SUBCATEGORY => #{new_entry}"
     title =  new_entry.split("|")
-    sub_category = Category.create(:title=>title[1].strip, :parent_id => @@category_id, :slug=>self.create_slug(title))
+    sub_category = Category.create(:title=>title[1].strip, :parent_id => @@category_id, :slug => self.create_slug(title[1]))
     if sub_category
       @@sub_category_id = sub_category.id
     end
@@ -170,8 +166,8 @@ class Category
   def self.new_super_subcategory(new_entry)
     puts "NEW SUPERSUBCATEGORY => #{new_entry}"
     title =  new_entry.split("**")
-    super_sub_category =  Category.create(:title=>title[1].strip, :parent_id =>@@sub_category_id,
-                                          :slug=>self.create_slug(title))
+    super_sub_category =  Category.create(:title =>title[1].strip, :parent_id =>@@sub_category_id,
+                                          :slug =>self.create_slug(title[1]))
     if super_sub_category
       @@super_sub_category_id = super_sub_category.id   # not really needed but just in case
     end
@@ -184,8 +180,11 @@ class Category
   end
 
   def self.create_slug(title)
-    title.split.join("-")
+    RAILS_DEFAULT_LOGGER.debug " title " + title.inspect
+    title = title.strip.gsub("/","").gsub("/ ", "").gsub(" /","")
+    slug = title.split.join("-")
   end
+
 
   def self.call_answerica_for_category(search_params)
    escaped_search_params = URI.escape(search_params) 

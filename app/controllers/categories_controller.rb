@@ -1,13 +1,15 @@
 require "memoized.rb"
 class CategoriesController < ApplicationController
- before_filter :admin_logged_in?, :except => [:index, :show, :answerica_categorization]
+ before_filter :admin_logged_in?, :except => [:index, :show, :answerica_categorization, :ckeywords]
  protect_from_forgery :except => [:answerica_categorization]
 
   def index
+   @title = "Categories"
    @categories = Category.all(:parent_id => nil)
   end
 
   def show
+    @title = "Sub Categories"
     @category = Category.first(:slug => params[:id])
    # memoized_categories = memoized_object(@category, 'find_all_subcategories')
    # RAILS_DEFAULT_LOGGER.debug " MEMOIZED OBJECT"  + memoized_categories.object_id.to_s
@@ -51,6 +53,12 @@ class CategoriesController < ApplicationController
       flash[:notice] = error
     end
     redirect_to admin_url(current_admin.id)
+  end
+
+  def ckeywords
+    @title = "Category Keywords"
+    @category = Category.first(:slug => params[:id])
+    @category_keywords = @category.category_keywords
   end
 
   def answerica_categorization
