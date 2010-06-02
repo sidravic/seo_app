@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.load_categories "/load_categories", :action => "load_categories", :controller => "categories"
   map.load_category_keywords "/load_category_keywords", :action => "load_category_keywords", :controller => "categories"
   map.resources :category_keyword
+  map.resources :user_keywords
   map.resources :admin, :only => [:show]
   map.login "/login", :action => 'login', :controller => 'admin'
   map.login_attempt "/login_attempt", :action => 'authenticate', :controller => 'admin'
