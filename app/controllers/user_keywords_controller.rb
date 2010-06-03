@@ -1,6 +1,6 @@
 class UserKeywordsController < ApplicationController
   def index
-    @user_keywords = UserKeyword.all
+    @categories = Category.all
   end
 
 end

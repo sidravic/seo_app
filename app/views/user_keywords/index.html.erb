@@ -17,33 +17,41 @@
   </div>
 
 
-  <table cellspacing='2' cellpadding='5'>
-    <% 0.step(@user_keywords.size - 1, 4) do |index| %>
-      <tr>
-        <td>
-          <% if index_within_category_array?(index,@user_keywords) %>
-            <%= link_to "#{@user_keywords[index].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@user_keywords[index].keyword)}", :class=>'categories' %>
-          <% end %>
-        </td>
-        <td>
-          <% if index_within_category_array?(index + 1, @user_keywords) %>           
-            <%= link_to "#{@user_keywords[index + 1].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@user_keywords[index + 1].keyword)}", :class=>'categories' %>
+  <% @categories.each do |category| %>
 
-          <% end%>
-        </td>
-        <td>
-          <% if index_within_category_array?(index + 2, @user_keywords) %>
-            <%= link_to "#{@user_keywords[index + 2].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@user_keywords[index + 2].keyword)}", :class=>'categories' %>
-            <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 2].slug), :class =>'category-keywords' %> </p>
+
+      <% user_keywords = category.user_keywords %>  
+      <% unless user_keywords.empty? %>
+        <h3> <%= category.title %> </h3>
+        <table cellspacing='2' cellpadding='5'>
+          <% 0.step(user_keywords.size - 1, 4) do |index| %>
+            <tr>
+              <td>
+                <% if index_within_category_array?(index,user_keywords) %>
+                  <%= link_to "#{user_keywords[index].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index].keyword)}", :class=>'categories' %>
+                <% end %>
+              </td>
+              <td>
+                <% if index_within_category_array?(index + 1, user_keywords) %>           
+                  <%= link_to "#{user_keywords[index + 1].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 1].keyword)}", :class=>'categories' %>
+
+                <% end%>
+              </td>
+              <td>
+                <% if index_within_category_array?(index + 2, user_keywords) %>
+                  <%= link_to "#{user_keywords[index + 2].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 2].keyword)}", :class=>'categories' %>
+                  <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 2].slug), :class =>'category-keywords' %> </p>
+                <% end %>
+              </td>
+              <td>
+                <% if index_within_category_array?(index + 3, user_keywords) %>
+                  <%= link_to "#{user_keywords[index + 3].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 3].keyword)}",:class => 'categories' %>
+                <% end %>
+              </td>
+            </tr>
           <% end %>
-        </td>
-        <td>
-          <% if index_within_category_array?(index + 3, @user_keywords) %>
-            <%= link_to "#{@user_keywords[index + 3].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@user_keywords[index + 3].keyword)}",:class => 'categories' %>
-          <% end %>
-        </td>
-      </tr>
+        </table>
+      <% end%>    
     <% end %>
-  </table>
-</div>
+  </div>
 
