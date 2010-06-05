@@ -45,7 +45,7 @@
               </td>
               <td>
                 <% if index_within_category_array?(index + 3, user_keywords) %>
-                  <%= link_to "#{user_keywords[index + 3].title}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 3].keyword)}",:class => 'categories' %>
+                  <%= link_to "#{user_keywords[index + 3].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 3].keyword)}",:class => 'categories' %>
                 <% end %>
               </td>
             </tr>
