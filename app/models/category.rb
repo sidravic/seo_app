@@ -19,7 +19,7 @@ class Category
   # DataMapper.auto_migrate!
   
   ANSWERICA_CLASSIFIER = "http://184.73.234.206:8080/qc/classifyIt?search="
-  CATEGORIES_FILE_LOCATION = '/home/siddharth/Desktop/categories1.1.txt'
+  CATEGORIES_FILE_LOCATION = "#{RAILS_ROOT}/categories1.1.txt"   # '/home/siddharth/Desktop/categories1.1.txt'
    
  
   def to_param
@@ -36,6 +36,25 @@ class Category
       total_categories += categories 
     end
     (sub_categories + total_categories)
+  end
+
+
+# recursive method to fetch subcategories
+  def find_all_subcategories_
+    @@final_sub_category_list = final_sub_category_list = categories = []
+    sub_categories = Category.all(:parent_id => self.id)
+    if sub_categories.empty?
+      puts " Category NO SUB CATEGORIES " + self.title 
+      return self 
+    else
+      @@final_sub_category_list << self
+      sub_categories.each do |category| 
+        @@final_sub_category_list << (category.find_all_subcategories).to_a
+        @@final_sub_category_list +=  category.to_a 
+      end      
+    end
+    @@final_sub_category_list.flatten!.uniq
+
   end
 
 
