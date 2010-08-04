@@ -59,6 +59,7 @@ class CategoriesController < ApplicationController
     @title = "Category Keywords"
     @category = Category.first(:slug => params[:id])
     @category_keywords = @category.category_keywords
+    @production_url_ = "http://helloexpert.com/answerica_search_/"
   end
 
   def answerica_categorization

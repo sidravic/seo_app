@@ -22,32 +22,32 @@
       <tr>
         <td>
           <% if index_within_category_array?(index, @category_keywords) %>
-            <%= link_to "#{@category_keywords[index].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@category_keywords[index].keyword)}", :class=>'categories' %>
+            <%= link_to "#{@category_keywords[index].keyword}", @production_url_ + "#{sanitize_title(@category_keywords[index].keyword)}", :class=>'categories' %>
           <% end %>
         </td>
 
           <td>
             <% if index_within_category_array?(index + 1, @category_keywords) %>
-              <%= link_to "#{@category_keywords[index + 1].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@category_keywords[index + 1].keyword)}", :class=>'categories' %>
+              <%= link_to "#{@category_keywords[index + 1].keyword}", @production_url_ + "#{sanitize_title(@category_keywords[index + 1].keyword)}", :class=>'categories' %>
             <% end %>
           </td>
 
             <td>
               <% if index_within_category_array?(index + 2, @category_keywords) %>
-                <%= link_to "#{@category_keywords[index + 2].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@category_keywords[index + 2].keyword)}", :class=>'categories' %>
+                <%= link_to "#{@category_keywords[index + 2].keyword}", @production_url_ + "#{sanitize_title(@category_keywords[index + 2].keyword)}", :class=>'categories' %>
               <% end %>
             </td>
 
               <td>
                 <% if index_within_category_array?(index + 3, @category_keywords) %>
-                  <%= link_to "#{@category_keywords[index + 3].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@category_keywords[index + 3].keyword)}", :class=>'categories' %>
+                  <%= link_to "#{@category_keywords[index + 3].keyword}", @production_url_ + "#{sanitize_title(@category_keywords[index + 3].keyword)}", :class=>'categories' %>
                 <% end %>
               </td>
               <td>
 
               <td>
                 <% if index_within_category_array?(index + 4, @category_keywords) %>
-                  <%= link_to "#{@category_keywords[index + 4].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(@category_keywords[index + 4].keyword)}", :class=>'categories' %>
+                  <%= link_to "#{@category_keywords[index + 4].keyword}", @production_url_ + "#{sanitize_title(@category_keywords[index + 4].keyword)}", :class=>'categories' %>
                 <% end %>
               </td>
               <td>
