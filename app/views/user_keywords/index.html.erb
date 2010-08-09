@@ -11,6 +11,9 @@
   }
 </style>
 
+<% content_for :title do %>
+	<%= "User Keywords | HelloExpert"%>
+<% end %>
 <div class= "sub-categories">
   <div class="super-class-title">
     <h2> <%= "User Keywords" %> </h2>
@@ -28,24 +31,24 @@
             <tr>
               <td>
                 <% if index_within_category_array?(index,user_keywords) %>
-                  <%= link_to "#{user_keywords[index].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index].keyword)}", :class=>'categories' %>
+                  <%= link_to "#{user_keywords[index].keyword}", "#{HELLOEXPERT_DOMAIN}/answerica_search_/" + "#{sanitize_title(user_keywords[index].keyword)}", :class=>'categories' %>
                 <% end %>
               </td>
               <td>
                 <% if index_within_category_array?(index + 1, user_keywords) %>           
-                  <%= link_to "#{user_keywords[index + 1].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 1].keyword)}", :class=>'categories' %>
+                  <%= link_to "#{user_keywords[index + 1].keyword}", "#{HELLOEXPERT_DOMAIN}/answerica_search_/" + "#{sanitize_title(user_keywords[index + 1].keyword)}", :class=>'categories' %>
 
                 <% end%>
               </td>
               <td>
                 <% if index_within_category_array?(index + 2, user_keywords) %>
-                  <%= link_to "#{user_keywords[index + 2].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 2].keyword)}", :class=>'categories' %>
+                  <%= link_to "#{user_keywords[index + 2].keyword}", "#{HELLOEXPERT_DOMAIN}/answerica_search_/" + "#{sanitize_title(user_keywords[index + 2].keyword)}", :class=>'categories' %>
                   <p> <%#= link_to "Browse Categories", ckeywords_category_url(@sub_categories[index + 2].slug), :class =>'category-keywords' %> </p>
                 <% end %>
               </td>
               <td>
                 <% if index_within_category_array?(index + 3, user_keywords) %>
-                  <%= link_to "#{user_keywords[index + 3].keyword}", "http://localhost:3001/answerica_search_/" + "#{sanitize_title(user_keywords[index + 3].keyword)}",:class => 'categories' %>
+                  <%= link_to "#{user_keywords[index + 3].keyword}", "#{HELLOEXPERT_DOMAIN}/answerica_search_/" + "#{sanitize_title(user_keywords[index + 3].keyword)}",:class => 'categories' %>
                 <% end %>
               </td>
             </tr>
