@@ -12,7 +12,9 @@
     font-weight:normal;    
   }
 </style>
-
+<% content_for :title do %>
+	<%= @category.title %>
+<% end %>
 
 <div class="category-category-keywords">
   <h2> <%= @category.title %> </h2>

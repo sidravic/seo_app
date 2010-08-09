@@ -11,6 +11,10 @@
   }
 </style>
 
+<% content_for :title do %>
+	<%= @category.title %>
+<% end %>
+
 <div class= "sub-categories">
   <div class="super-class-title">
     <h2> <%= @category.title %> </h2>
